@@ -1,1978 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime for Research & Studies</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #F5F3EF;
-            --bg-alt: #EDEAE4;
-            --text: #1a1a1a;
-            --text-muted: #5c5c5c;
-            --text-light: #8a8a8a;
-            --accent: #c4a47c;
-            --accent-dark: #a08460;
-            --border: rgba(0,0,0,0.08);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 15px;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Custom cursor dot */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease;
-            mix-blend-mode: difference;
-        }
-
-        /* Navigation - minimal top bar */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            mix-blend-mode: difference;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .lang-toggle {
-            padding: 6px 14px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 12px;
-            font-weight: 500;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 0.02em;
-        }
-
-        .lang-toggle:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.4);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo img {
-            height: 36px;
-            width: auto;
-            filter: brightness(0) invert(1);
-        }
-
-        .logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 500;
-            color: white;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: white;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero - Split layout */
-        .hero {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            position: relative;
-        }
-
-        .hero-left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 120px 60px 80px 60px;
-            position: relative;
-        }
-
-        .hero-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-light);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            opacity: 0;
-            animation: slideUp 0.8s ease forwards 0.2s;
-        }
-
-        .hero-label::before {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background: var(--text-light);
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(36px, 5vw, 56px);
-            font-weight: 500;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 28px;
-            opacity: 0;
-            animation: slideUp 0.8s ease forwards 0.4s;
-        }
-
-        .hero-title span:last-child {
-            color: var(--accent-dark);
-        }
-
-        .hero-text {
-            font-size: 15px;
-            color: var(--text-muted);
-            max-width: 400px;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            opacity: 0;
-            animation: slideUp 0.8s ease forwards 0.6s;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            opacity: 0;
-            animation: slideUp 0.8s ease forwards 0.8s;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            font-size: 13px;
-            font-weight: 500;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            letter-spacing: 0.02em;
-        }
-
-        .btn-primary {
-            background: var(--text);
-            color: var(--bg);
-        }
-
-        .btn-primary:hover {
-            background: var(--text-muted);
-            transform: translateY(-2px);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-ghost:hover {
-            border-color: var(--text);
-        }
-
-        .hero-right {
-            background: var(--bg-alt);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-visual {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .floating-card {
-            position: absolute;
-            background: white;
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-card:nth-child(1) {
-            top: 20%;
-            left: 15%;
-            animation-delay: 0s;
-        }
-
-        .floating-card:nth-child(2) {
-            top: 50%;
-            right: 10%;
-            animation-delay: -2s;
-        }
-
-        .floating-card:nth-child(3) {
-            bottom: 20%;
-            left: 25%;
-            animation-delay: -4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-        }
-
-        .card-stat {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--accent-dark);
-            margin-bottom: 4px;
-        }
-
-        .card-label {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* Marquee section */
-        .marquee-section {
-            padding: 24px 0;
-            background: var(--text);
-            overflow: hidden;
-        }
-
-        .marquee {
-            display: flex;
-            animation: marquee 30s linear infinite;
-        }
-
-        .marquee-item {
-            flex-shrink: 0;
-            padding: 0 40px;
-            font-size: 13px;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .marquee-item::after {
-            content: '◆';
-            font-size: 6px;
-            color: var(--accent);
-        }
-
-        @keyframes marquee {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
-
-        /* Process Section - Horizontal scroll */
-        .process {
-            padding: 100px 60px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 60px;
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-        }
-
-        .section-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 64px;
-            font-weight: 300;
-            color: var(--bg-alt);
-            line-height: 1;
-        }
-
-        .process-track {
-            display: flex;
-            gap: 24px;
-            overflow-x: auto;
-            padding-bottom: 20px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .process-track::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .process-track::-webkit-scrollbar-track {
-            background: var(--bg-alt);
-            border-radius: 2px;
-        }
-
-        .process-track::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        .process-card {
-            flex: 0 0 300px;
-            background: white;
-            border-radius: 16px;
-            padding: 32px;
-            scroll-snap-align: start;
-            position: relative;
-            transition: transform 0.4s ease;
-        }
-
-        .process-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .process-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            font-weight: 300;
-            color: var(--bg-alt);
-            margin-bottom: 20px;
-        }
-
-        .process-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .process-card p {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Services - Asymmetric grid */
-        .services {
-            padding: 100px 60px;
-            background: var(--bg-alt);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .services-content h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            font-weight: 500;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-        }
-
-        .services-content > p {
-            color: var(--text-muted);
-            font-size: 15px;
-            line-height: 1.8;
-            margin-bottom: 40px;
-        }
-
-        .service-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .service-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 20px 24px;
-            background: var(--bg);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .service-item:hover {
-            background: white;
-            transform: translateX(8px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-        }
-
-        .service-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .service-info h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .service-info p {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .services-visual {
-            position: relative;
-            height: 500px;
-        }
-
-        .visual-card {
-            position: absolute;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            transition: transform 0.4s ease;
-        }
-
-        .visual-card:hover {
-            transform: scale(1.02);
-        }
-
-        .visual-card.large {
-            width: 280px;
-            height: 340px;
-            top: 0;
-            left: 0;
-        }
-
-        .visual-card.small {
-            width: 200px;
-            height: 240px;
-            bottom: 0;
-            right: 0;
-        }
-
-        .visual-card-content {
-            padding: 28px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .visual-card-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--bg-alt);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .visual-card h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-
-        .visual-card p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* Testimonials - Stacked cards */
-        .testimonials {
-            padding: 100px 60px;
-            position: relative;
-        }
-
-        .testimonials-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .testimonials-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .testimonials-header p {
-            color: var(--text-muted);
-            font-size: 15px;
-        }
-
-        .testimonials-stack {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            height: 300px;
-        }
-
-        .testimonial-card {
-            position: absolute;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-
-        .testimonial-card:nth-child(1) {
-            z-index: 3;
-            transform: translateY(0) scale(1);
-        }
-
-        .testimonial-card:nth-child(2) {
-            z-index: 2;
-            transform: translateY(20px) scale(0.95);
-            opacity: 0.7;
-        }
-
-        .testimonial-card:nth-child(3) {
-            z-index: 1;
-            transform: translateY(40px) scale(0.9);
-            opacity: 0.4;
-        }
-
-        .testimonial-quote {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 400;
-            line-height: 1.6;
-            margin-bottom: 28px;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .author-avatar {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .author-details h5 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .author-details span {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* Stats strip */
-        .stats-strip {
-            padding: 60px;
-            background: var(--text);
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 500;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: rgba(255,255,255,0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Contact Section - Split Layout */
-        .contact-section {
-            padding: 0;
-            background: var(--bg-alt);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 600px;
-        }
-
-        .contact-left {
-            background: var(--text);
-            color: white;
-            padding: 80px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .contact-left h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 500;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-        }
-
-        .contact-left > p {
-            font-size: 15px;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 48px;
-            line-height: 1.8;
-        }
-
-        .contact-methods {
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
-        }
-
-        .contact-method {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 20px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .contact-method:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: var(--accent);
-            transform: translateX(8px);
-        }
-
-        .contact-method-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--accent);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .contact-method-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: white;
-        }
-
-        .contact-method-info h4 {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 6px;
-        }
-
-        .contact-method-info p {
-            font-size: 16px;
-            color: white;
-            font-weight: 500;
-        }
-
-        .contact-method-info a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .contact-method-info a:hover {
-            color: var(--accent);
-        }
-
-        .contact-right {
-            padding: 80px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .contact-form-header {
-            margin-bottom: 32px;
-        }
-
-        .contact-form-header h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .contact-form-header p {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .form-field {
-            margin-bottom: 16px;
-        }
-
-        .form-field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .form-field input,
-        .form-field textarea {
-            width: 100%;
-            padding: 14px 16px;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            color: var(--text);
-            transition: all 0.2s ease;
-        }
-
-        .form-field input:focus,
-        .form-field textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(196, 164, 124, 0.1);
-        }
-
-        .form-field textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-submit-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--text);
-            color: white;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .form-submit-btn:hover {
-            background: var(--text-muted);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 60px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(196, 164, 124, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-content h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 500;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-        }
-
-        .cta-content p {
-            color: var(--text-muted);
-            font-size: 16px;
-            margin-bottom: 32px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Footer */
-        footer {
-            padding: 60px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-left {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            list-style: none;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--text);
-        }
-
-        .footer-right {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        /* Scroll reveal animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-right {
-                min-height: 400px;
-            }
-
-            .hero-left {
-                padding: 100px 40px 60px;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .services-visual {
-                height: 400px;
-            }
-
-            .stats-strip {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 32px;
-            }
-
-            .contact-section {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-left,
-            .contact-right {
-                padding: 60px 40px;
-            }
-
-            nav {
-                padding: 16px 32px;
-            }
-
-            .process,
-            .services,
-            .testimonials,
-            .cta-section {
-                padding: 80px 32px;
-            }
-
-            .section-header h2,
-            .services-content h2,
-            .testimonials-header h2 {
-                font-size: 32px;
-            }
-
-            .process-track {
-                gap: 16px;
-            }
-
-            .process-card {
-                flex: 0 0 280px;
-                padding: 28px;
-            }
-
-            .service-list {
-                gap: 12px;
-            }
-
-            .testimonials-stack {
-                height: 280px;
-            }
-
-            .testimonial-card {
-                padding: 32px;
-            }
-
-            footer {
-                padding: 48px 32px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            nav {
-                padding: 12px 16px;
-                gap: 12px;
-            }
-
-            .logo {
-                flex-shrink: 1;
-                min-width: 0;
-                max-width: 50%;
-            }
-
-            .logo img {
-                height: 28px;
-                flex-shrink: 0;
-            }
-
-            .logo-text {
-                font-size: 13px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .nav-right {
-                gap: 12px;
-                flex-shrink: 0;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .lang-toggle {
-                font-size: 11px;
-                padding: 6px 10px;
-                white-space: nowrap;
-            }
-
-            .hero-left {
-                padding: 100px 20px 50px;
-            }
-
-            .hero-label {
-                font-size: 10px;
-                padding: 5px 12px;
-            }
-
-            .hero-title {
-                font-size: 28px;
-            }
-
-            .hero-text {
-                font-size: 14px;
-            }
-
-            .btn {
-                padding: 12px 22px;
-                font-size: 12px;
-            }
-
-            .hero-cta {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .hero-right {
-                min-height: 300px;
-            }
-
-            .floating-card {
-                padding: 16px 20px;
-            }
-
-            .card-stat {
-                font-size: 24px;
-            }
-
-            .card-label {
-                font-size: 11px;
-            }
-
-            .marquee-section {
-                padding: 20px 0;
-            }
-
-            .marquee-item {
-                font-size: 11px;
-                padding: 0 24px;
-            }
-
-            .process,
-            .services,
-            .testimonials,
-            .cta-section {
-                padding: 60px 20px;
-            }
-
-            .section-header h2,
-            .services-content h2,
-            .testimonials-header h2,
-            .timeline-header h2 {
-                font-size: 26px;
-            }
-
-            .section-label {
-                font-size: 10px;
-            }
-
-            .section-header p,
-            .services-content > p,
-            .testimonials-header p {
-                font-size: 14px;
-            }
-
-            .section-number {
-                font-size: 48px;
-            }
-
-            .process-track {
-                gap: 12px;
-                padding-bottom: 16px;
-            }
-
-            .process-card {
-                flex: 0 0 260px;
-                padding: 24px;
-            }
-
-            .process-number {
-                font-size: 36px;
-            }
-
-            .process-card h3 {
-                font-size: 17px;
-            }
-
-            .process-card p {
-                font-size: 13px;
-            }
-
-            .service-item {
-                padding: 16px 20px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-
-            .service-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-
-            .service-info h4 {
-                font-size: 14px;
-            }
-
-            .service-info p {
-                font-size: 12px;
-            }
-
-            .visual-card.large {
-                width: 240px;
-                height: 300px;
-            }
-
-            .visual-card.small {
-                width: 180px;
-                height: 220px;
-            }
-
-            .visual-card-content {
-                padding: 24px;
-            }
-
-            .visual-card-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .visual-card h4 {
-                font-size: 16px;
-            }
-
-            .visual-card p {
-                font-size: 12px;
-            }
-
-            .testimonials-stack {
-                height: 320px;
-            }
-
-            .testimonial-card {
-                padding: 28px;
-            }
-
-            .testimonial-quote {
-                font-size: 17px;
-                margin-bottom: 24px;
-            }
-
-            .author-avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-            }
-
-            .author-details h5 {
-                font-size: 13px;
-            }
-
-            .author-details span {
-                font-size: 11px;
-            }
-
-            .stats-strip {
-                grid-template-columns: 1fr 1fr;
-                padding: 40px 20px;
-                gap: 24px;
-            }
-
-            .stat-value {
-                font-size: 32px;
-            }
-
-            .stat-label {
-                font-size: 11px;
-            }
-
-            .contact-left,
-            .contact-right {
-                padding: 50px 24px;
-            }
-
-            .contact-left h2 {
-                font-size: 32px;
-            }
-
-            .contact-left > p {
-                font-size: 14px;
-                margin-bottom: 36px;
-            }
-
-            .contact-methods {
-                gap: 20px;
-            }
-
-            .contact-method {
-                padding: 16px;
-            }
-
-            .contact-method-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .contact-method-icon svg {
-                width: 18px;
-                height: 18px;
-            }
-
-            .contact-method-info h4 {
-                font-size: 11px;
-            }
-
-            .contact-method-info p {
-                font-size: 14px;
-            }
-
-            .contact-form-header h3 {
-                font-size: 24px;
-            }
-
-            .contact-form-header p {
-                font-size: 13px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .form-field label {
-                font-size: 11px;
-            }
-
-            .form-field input,
-            .form-field textarea {
-                padding: 12px 14px;
-                font-size: 13px;
-            }
-
-            .form-field textarea {
-                min-height: 100px;
-            }
-
-            .form-submit-btn {
-                padding: 14px;
-                font-size: 12px;
-            }
-
-            .cta-section {
-                padding: 80px 20px;
-            }
-
-            .cta-content h2 {
-                font-size: 32px;
-            }
-
-            .cta-content p {
-                font-size: 15px;
-            }
-
-            footer {
-                padding: 40px 20px;
-                flex-direction: column;
-                gap: 24px;
-                text-align: center;
-            }
-
-            .footer-left {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .footer-logo {
-                font-size: 16px;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .footer-links a {
-                font-size: 12px;
-            }
-
-            .footer-right {
-                font-size: 11px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav {
-                padding: 10px 12px;
-            }
-
-            .logo img {
-                height: 26px;
-            }
-
-            .logo-text {
-                font-size: 11px;
-            }
-
-            .lang-toggle {
-                font-size: 10px;
-                padding: 5px 8px;
-            }
-
-            .hero-left {
-                padding: 90px 16px 40px;
-            }
-
-            .hero-title {
-                font-size: 24px;
-            }
-
-            .hero-text {
-                font-size: 13px;
-            }
-
-            .btn {
-                padding: 11px 20px;
-                font-size: 11px;
-            }
-
-            .floating-card {
-                padding: 14px 18px;
-            }
-
-            .card-stat {
-                font-size: 20px;
-            }
-
-            .card-label {
-                font-size: 10px;
-            }
-
-            .process,
-            .services,
-            .testimonials,
-            .cta-section {
-                padding: 50px 16px;
-            }
-
-            .section-header h2,
-            .services-content h2,
-            .testimonials-header h2,
-            .timeline-header h2 {
-                font-size: 24px;
-            }
-
-            .process-card {
-                flex: 0 0 240px;
-                padding: 20px;
-            }
-
-            .process-number {
-                font-size: 32px;
-            }
-
-            .process-card h3 {
-                font-size: 16px;
-            }
-
-            .process-card p {
-                font-size: 12px;
-            }
-
-            .service-item {
-                padding: 14px 16px;
-            }
-
-            .service-icon {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-            }
-
-            .service-info h4 {
-                font-size: 13px;
-            }
-
-            .testimonials-stack {
-                height: 360px;
-            }
-
-            .testimonial-card {
-                padding: 24px;
-            }
-
-            .testimonial-quote {
-                font-size: 15px;
-            }
-
-            .stats-strip {
-                grid-template-columns: 1fr;
-                padding: 32px 16px;
-                gap: 20px;
-            }
-
-            .stat-value {
-                font-size: 28px;
-            }
-
-            .contact-left,
-            .contact-right {
-                padding: 40px 20px;
-            }
-
-            .contact-left h2 {
-                font-size: 28px;
-            }
-
-            .cta-content h2 {
-                font-size: 28px;
-            }
-
-            .cta-content p {
-                font-size: 14px;
-            }
-
-            footer {
-                padding: 32px 16px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .logo-text {
-                display: none;
-            }
-
-            .logo img {
-                height: 24px;
-            }
-
-            .hero-title {
-                font-size: 22px;
-            }
-
-            .section-header h2,
-            .services-content h2,
-            .testimonials-header h2,
-            .timeline-header h2 {
-                font-size: 22px;
-            }
-
-            .contact-left h2 {
-                font-size: 26px;
-            }
-
-            .cta-content h2 {
-                font-size: 26px;
-            }
-
-            .testimonials-stack {
-                height: 380px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="#" class="logo">
-            <img src="logo.png" alt="Prime Research Logo">
-            <span class="logo-text" data-ar="برايم للبحوث والدراسات" data-en="Prime Research & Studies">برايم للبحوث والدراسات</span>
-        </a>
-        <div class="nav-right">
-            <ul class="nav-links">
-                <li><a href="#process" data-ar="العملية" data-en="Process">العملية</a></li>
-                <li><a href="#services" data-ar="الخدمات" data-en="Services">الخدمات</a></li>
-                <li><a href="#testimonials" data-ar="التقييمات" data-en="Reviews">التقييمات</a></li>
-                <li><a href="#contact" data-ar="اتصل بنا" data-en="Contact">اتصل بنا</a></li>
-            </ul>
-            <button class="lang-toggle" onclick="toggleLanguage()">English</button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-left">
-            <div class="hero-label" data-ar="التميز الأكاديمي" data-en="Academic Excellence">التميز الأكاديمي</div>
-            <h1 class="hero-title"><span data-ar="نقوم بإعداد وتسليم " data-en="We Prepare and Submit ">نقوم بإعداد وتسليم </span><span data-ar="أبحاثك الأكاديمية" data-en="Your Research">أبحاثك الأكاديمية</span></h1>
-            <p class="hero-text" data-ar="نحن نتولى إعداد أبحاثك وتقاريرك بشكل كامل ونقوم بتسليمها. خدمة شاملة بدون الحاجة لاجتماعات أو متابعات." data-en="We handle the complete preparation of your research and reports and submit them. Comprehensive service without the need for meetings or follow-ups.">نحن نتولى إعداد أبحاثك وتقاريرك بشكل كامل ونقوم بتسليمها. خدمة شاملة بدون الحاجة لاجتماعات أو متابعات.</p>
-            <div class="hero-cta">
-                <a href="#contact" class="btn btn-primary" data-ar="ابدأ مشروعك" data-en="Start Your Project">ابدأ مشروعك</a>
-                <a href="#process" class="btn btn-ghost" data-ar="كيف يعمل" data-en="How It Works">كيف يعمل</a>
-            </div>
-        </div>
-        <div class="hero-right">
-            <div class="hero-visual">
-                <div class="floating-card">
-                    <div class="card-stat">500+</div>
-                    <div class="card-label" data-ar="طالب تم مساعدته" data-en="Students Helped">طالب تم مساعدته</div>
-                </div>
-                <div class="floating-card">
-                    <div class="card-stat">98%</div>
-                    <div class="card-label" data-ar="معدل النجاح" data-en="Success Rate">معدل النجاح</div>
-                </div>
-                <div class="floating-card">
-                    <div class="card-stat">24/7</div>
-                    <div class="card-label" data-ar="الدعم" data-en="Support">الدعم</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Marquee -->
-    <div class="marquee-section">
-        <div class="marquee">
-            <div class="marquee-item" data-ar="المساعدة البحثية" data-en="Research Assistance">المساعدة البحثية</div>
-            <div class="marquee-item" data-ar="دعم الأطروحة" data-en="Thesis Support">دعم الأطروحة</div>
-            <div class="marquee-item" data-ar="الكتابة الأكاديمية" data-en="Academic Writing">الكتابة الأكاديمية</div>
-            <div class="marquee-item" data-ar="تحليل البيانات" data-en="Data Analysis">تحليل البيانات</div>
-            <div class="marquee-item" data-ar="مراجعة الأدبيات" data-en="Literature Review">مراجعة الأدبيات</div>
-            <div class="marquee-item" data-ar="إرشاد المنهجية" data-en="Methodology Guidance">إرشاد المنهجية</div>
-            <div class="marquee-item" data-ar="المساعدة البحثية" data-en="Research Assistance">المساعدة البحثية</div>
-            <div class="marquee-item" data-ar="دعم الأطروحة" data-en="Thesis Support">دعم الأطروحة</div>
-            <div class="marquee-item" data-ar="الكتابة الأكاديمية" data-en="Academic Writing">الكتابة الأكاديمية</div>
-            <div class="marquee-item" data-ar="تحليل البيانات" data-en="Data Analysis">تحليل البيانات</div>
-            <div class="marquee-item" data-ar="مراجعة الأدبيات" data-en="Literature Review">مراجعة الأدبيات</div>
-            <div class="marquee-item" data-ar="إرشاد المنهجية" data-en="Methodology Guidance">إرشاد المنهجية</div>
-        </div>
-    </div>
-
-    <!-- Process Section -->
-    <section class="process" id="process">
-        <div class="section-header reveal">
-            <div>
-                <h2 class="section-title" data-ar="كيف نعمل" data-en="How We Work">كيف نعمل</h2>
-            </div>
-            <div class="section-number">01</div>
-        </div>
-        <div class="process-track">
-            <div class="process-card reveal reveal-delay-1">
-                <div class="process-number">01</div>
-                <h3 data-ar="أخبرنا بما تحتاج" data-en="Tell Us What You Need">أخبرنا بما تحتاج</h3>
-                <p data-ar="شارك معنا تفاصيل مشروعك البحثي أو التقرير الذي تحتاجه والموعد النهائي." data-en="Share with us the details of your research project or report you need and the deadline.">شارك معنا تفاصيل مشروعك البحثي أو التقرير الذي تحتاجه والموعد النهائي.</p>
-            </div>
-            <div class="process-card reveal reveal-delay-2">
-                <div class="process-number">02</div>
-                <h3 data-ar="نحن نقوم بالعمل" data-en="We Do the Work">نحن نقوم بالعمل</h3>
-                <p data-ar="فريقنا من الخبراء يتولى إعداد بحثك أو تقريرك بالكامل بجودة عالية." data-en="Our team of experts handles the complete preparation of your research or report with high quality.">فريقنا من الخبراء يتولى إعداد بحثك أو تقريرك بالكامل بجودة عالية.</p>
-            </div>
-            <div class="process-card reveal reveal-delay-3">
-                <div class="process-number">03</div>
-                <h3 data-ar="نسلمك العمل جاهزاً" data-en="We Deliver It Ready">نسلمك العمل جاهزاً</h3>
-                <p data-ar="تستلم عملك كاملاً وجاهزاً للتقديم بدون أي جهد من طرفك." data-en="You receive your work complete and ready for submission without any effort from you.">تستلم عملك كاملاً وجاهزاً للتقديم بدون أي جهد من طرفك.</p>
-            </div>
-            <div class="process-card reveal reveal-delay-4">
-                <div class="process-number">04</div>
-                <h3 data-ar="تحقق النجاح" data-en="Achieve Success">تحقق النجاح</h3>
-                <p data-ar="قدم عملك بثقة واحصل على النتائج المتميزة التي تستحقها." data-en="Submit your work confidently and get the excellent results you deserve.">قدم عملك بثقة واحصل على النتائج المتميزة التي تستحقها.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="services-grid">
-            <div class="services-content">
-                <h2 class="reveal" data-ar="نقوم بإعداد وتسليم أعمالك" data-en="We Prepare and Submit Your Work">نقوم بإعداد وتسليم أعمالك</h2>
-                <p class="reveal reveal-delay-1" data-ar="نحن نتولى إعداد أبحاثك وتقاريرك بشكل كامل ونقوم بتسليمها. خدمة شاملة بدون الحاجة لاجتماعات." data-en="We handle the complete preparation of your research and reports and submit them. Comprehensive service without the need for meetings.">نحن نتولى إعداد أبحاثك وتقاريرك بشكل كامل ونقوم بتسليمها. خدمة شاملة بدون الحاجة لاجتماعات.</p>
-                <div class="service-list">
-                    <div class="service-item reveal reveal-delay-2">
-                        <div class="service-icon">📝</div>
-                        <div class="service-info">
-                            <h4 data-ar="إعداد الأبحاث" data-en="Research Preparation">إعداد الأبحاث</h4>
-                            <p data-ar="نقوم بإعداد أبحاثك بالكامل وتسليمها جاهزة" data-en="We prepare your research completely and deliver it ready">نقوم بإعداد أبحاثك بالكامل وتسليمها جاهزة</p>
-                        </div>
-                    </div>
-                    <div class="service-item reveal reveal-delay-3">
-                        <div class="service-icon">📄</div>
-                        <div class="service-info">
-                            <h4 data-ar="كتابة التقارير" data-en="Report Writing">كتابة التقارير</h4>
-                            <p data-ar="نكتب تقاريرك ونسلمها لك جاهزة للتقديم" data-en="We write your reports and deliver them ready for submission">نكتب تقاريرك ونسلمها لك جاهزة للتقديم</p>
-                        </div>
-                    </div>
-                    <div class="service-item reveal reveal-delay-4">
-                        <div class="service-icon">🎓</div>
-                        <div class="service-info">
-                            <h4 data-ar="إعداد الأطروحات" data-en="Thesis Preparation">إعداد الأطروحات</h4>
-                            <p data-ar="نتولى إعداد أطروحتك كاملة ونسلمها" data-en="We handle your complete thesis preparation and deliver it">نتولى إعداد أطروحتك كاملة ونسلمها</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="services-visual reveal">
-                <div class="visual-card large">
-                    <div class="visual-card-content">
-                        <div class="visual-card-icon">🎓</div>
-                        <h4 data-ar="باحثون خبراء" data-en="Expert Researchers">باحثون خبراء</h4>
-                        <p data-ar="الوصول إلى أكثر من 50 متخصصاً في مختلف التخصصات يفهمون الصرامة الأكاديمية." data-en="Access 50+ specialists across disciplines who understand academic rigor.">الوصول إلى أكثر من 50 متخصصاً في مختلف التخصصات يفهمون الصرامة الأكاديمية.</p>
-                    </div>
-                </div>
-                <div class="visual-card small">
-                    <div class="visual-card-content">
-                        <div class="visual-card-icon">⚡</div>
-                        <h4 data-ar="تسليم سريع" data-en="Fast Turnaround">تسليم سريع</h4>
-                        <p data-ar="التزم بمواعيدك النهائية بثقة." data-en="Meet your deadlines with confidence.">التزم بمواعيدك النهائية بثقة.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="testimonials-header reveal">
-            <h2 data-ar="ماذا يقول الطلاب" data-en="What Students Say">ماذا يقول الطلاب</h2>
-            <p data-ar="ملاحظات حقيقية من الطلاب الذين ساعدناهم على النجاح" data-en="Real feedback from students we've helped succeed">ملاحظات حقيقية من الطلاب الذين ساعدناهم على النجاح</p>
-        </div>
-        <div class="testimonials-stack">
-            <div class="testimonial-card" onclick="rotateTestimonials()">
-                <p class="testimonial-quote" data-ar="والله برايم سوولي البحث كامل وسلموه لي جاهز. ما احتجت اسوي شي، كل شي كان تمام." data-en="Honestly, Prime did my entire research and delivered it ready. I didn't need to do anything, everything was perfect.">"والله برايم سوولي البحث كامل وسلموه لي جاهز. ما احتجت اسوي شي، كل شي كان تمام."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">ن</div>
-                    <div class="author-details">
-                        <h5 data-ar="نورة العطية" data-en="Noura Al-Attiyah">نورة العطية</h5>
-                        <span data-ar="طالبة جامعية" data-en="University Student">طالبة جامعية</span>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card" onclick="rotateTestimonials()">
-                <p class="testimonial-quote" data-ar="ما شاء الله، الشغل كان احترافي وسلموه بالوقت. يستاهلون كل خير." data-en="Mashallah, the work was professional and delivered on time. They deserve all the best.">"ما شاء الله، الشغل كان احترافي وسلموه بالوقت. يستاهلون كل خير."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">ع</div>
-                    <div class="author-details">
-                        <h5 data-ar="عبدالله السليطي" data-en="Abdullah Al-Sulaiti">عبدالله السليطي</h5>
-                        <span data-ar="طالب ماجستير" data-en="Master's Student">طالب ماجستير</span>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card" onclick="rotateTestimonials()">
-                <p class="testimonial-quote" data-ar="برايم سوولي الأطروحة من الأول للآخر. ما احتجت اجتماعات ولا شي، سلموني العمل جاهز." data-en="Prime did my thesis from start to finish. I didn't need meetings or anything, they delivered the work ready.">"برايم سوولي الأطروحة من الأول للآخر. ما احتجت اجتماعات ولا شي، سلموني العمل جاهز."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">ش</div>
-                    <div class="author-details">
-                        <h5 data-ar="شيخة المهندي" data-en="Sheikha Al-Mohannadi">شيخة المهندي</h5>
-                        <span data-ar="طالبة دكتوراه" data-en="PhD Student">طالبة دكتوراه</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Strip -->
-    <div class="stats-strip">
-        <div class="stat-item reveal">
-            <div class="stat-value">500+</div>
-            <div class="stat-label" data-ar="الطلاب" data-en="Students">الطلاب</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-1">
-            <div class="stat-value">98%</div>
-            <div class="stat-label" data-ar="النجاح" data-en="Success">النجاح</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-2">
-            <div class="stat-value">50+</div>
-            <div class="stat-label" data-ar="الخبراء" data-en="Experts">الخبراء</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-3">
-            <div class="stat-value">24/7</div>
-            <div class="stat-label" data-ar="الدعم" data-en="Support">الدعم</div>
-        </div>
-    </div>
-
-    <!-- Contact Section - Split Layout -->
-    <section class="contact-section" id="contact">
-        <div class="contact-left">
-            <h2 data-ar="تواصل معنا" data-en="Get in Touch">تواصل معنا</h2>
-            <p data-ar="نحن هنا لمساعدتك في رحلتك الأكاديمية. تواصل معنا من خلال أي من القنوات التالية." data-en="We're here to help you with your academic journey. Reach out through any of the following channels.">نحن هنا لمساعدتك في رحلتك الأكاديمية. تواصل معنا من خلال أي من القنوات التالية.</p>
-            <div class="contact-methods">
-                <div class="contact-method">
-                    <div class="contact-method-icon">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    </div>
-                    <div class="contact-method-info">
-                        <h4 data-ar="الهاتف" data-en="Phone">الهاتف</h4>
-                        <p><a href="tel:+1234567890">+123 456 7890</a></p>
-                    </div>
-                </div>
-                <div class="contact-method">
-                    <div class="contact-method-icon">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </div>
-                    <div class="contact-method-info">
-                        <h4 data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</h4>
-                        <p><a href="mailto:info@primeresearch.com">info@primeresearch.com</a></p>
-                    </div>
-                </div>
-                <div class="contact-method">
-                    <div class="contact-method-icon">
-                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </div>
-                    <div class="contact-method-info">
-                        <h4 data-ar="إنستغرام" data-en="Instagram">إنستغرام</h4>
-                        <p><a href="https://instagram.com" target="_blank">@primeresearch</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="contact-right">
-            <div class="contact-form-header">
-                <h3 data-ar="أرسل لنا رسالة" data-en="Send Us a Message">أرسل لنا رسالة</h3>
-                <p data-ar="املأ النموذج أدناه وسنعود إليك قريباً" data-en="Fill out the form below and we'll get back to you soon">املأ النموذج أدناه وسنعود إليك قريباً</p>
-            </div>
-            <form onsubmit="handleContactSubmit(event)">
-                <div class="form-row">
-                    <div class="form-field">
-                        <label data-ar="الاسم" data-en="Name">الاسم</label>
-                        <input type="text" name="name" required>
-                    </div>
-                    <div class="form-field">
-                        <label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
-                        <input type="email" name="email" required>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <label data-ar="الموضوع" data-en="Subject">الموضوع</label>
-                    <input type="text" name="subject" required>
-                </div>
-                <div class="form-field">
-                    <label data-ar="الرسالة" data-en="Message">الرسالة</label>
-                    <textarea name="message" required></textarea>
-                </div>
-                <button type="submit" class="form-submit-btn" data-ar="إرسال الرسالة" data-en="Send Message">إرسال الرسالة</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="cta-content reveal">
-            <h2 data-ar="هل أنت مستعد للبدء؟" data-en="Ready to Begin?">هل أنت مستعد للبدء؟</h2>
-            <p data-ar="اتخذ الخطوة الأولى نحو التميز الأكاديمي. فريقنا هنا لدعم رحلتك البحثية." data-en="Take the first step toward academic excellence. Our team is here to support your research journey.">اتخذ الخطوة الأولى نحو التميز الأكاديمي. فريقنا هنا لدعم رحلتك البحثية.</p>
-            <a href="#contact" class="btn btn-primary" data-ar="ابدأ الآن" data-en="Get Started">ابدأ الآن</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-left">
-            <div class="footer-logo">
-                <img src="logo.png" alt="Prime Research Logo" style="height: 32px; width: auto; filter: brightness(0);">
-                <span data-ar="برايم للبحوث" data-en="Prime Research"> Prime Research & Studies</span>
-            </div>
-            <ul class="footer-links">
-                <li><a href="#process" data-ar="العملية" data-en="Process">العملية</a></li>
-                <li><a href="#services" data-ar="الخدمات" data-en="Services">الخدمات</a></li>
-                <li><a href="#testimonials" data-ar="التقييمات" data-en="Reviews">التقييمات</a></li>
-                <li><a href="https://instagram.com" target="_blank" data-ar="إنستغرام" data-en="Instagram">إنستغرام</a></li>
-            </ul>
-        </div>
-        <div class="footer-right">
-            <span data-ar="© 2024 برايم للبحوث والدراسات" data-en="© 2025 Prime for Research & Studies">© 2025 برايم للبحوث والدراسات</span>
-        </div>
-    </footer>
-
-    <script>
-        // Language Toggle
-        let currentLang = 'ar';
-        
-        function toggleLanguage() {
-            const html = document.documentElement;
-            const langBtn = document.querySelector('.lang-toggle');
-            
-            if (currentLang === 'ar') {
-                currentLang = 'en';
-                html.setAttribute('lang', 'en');
-                html.setAttribute('dir', 'ltr');
-                langBtn.textContent = 'العربية';
-                updateContent('en');
-            } else {
-                currentLang = 'ar';
-                html.setAttribute('lang', 'ar');
-                html.setAttribute('dir', 'rtl');
-                langBtn.textContent = 'English';
-                updateContent('ar');
-            }
-        }
-        
-        function updateContent(lang) {
-            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-                el.textContent = el.getAttribute('data-' + lang);
-            });
-        }
-
-        // Contact Form Handler
-        function handleContactSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-            
-            alert(currentLang === 'ar' 
-                ? 'شكراً لتواصلك معنا! سنرد عليك قريباً.' 
-                : 'Thank you for contacting us! We will get back to you soon.');
-            
-            e.target.reset();
-        }
-
-        // Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        
-        const revealOnScroll = () => {
-            reveals.forEach(el => {
-                const top = el.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                if (top < windowHeight - 80) {
-                    el.classList.add('visible');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', revealOnScroll);
-        window.addEventListener('load', revealOnScroll);
-
-        // Testimonial rotation
-        function rotateTestimonials() {
-            const stack = document.querySelector('.testimonials-stack');
-            const cards = stack.querySelectorAll('.testimonial-card');
-            stack.appendChild(cards[0]);
-        }
-
-        // Auto rotate testimonials
-        setInterval(rotateTestimonials, 5000);
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Parallax floating cards
-        document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.floating-card');
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            
-            cards.forEach((card, i) => {
-                const factor = (i + 1) * 0.5;
-                card.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
-            });
-        });
-    </script>
-</body>
-</html>
